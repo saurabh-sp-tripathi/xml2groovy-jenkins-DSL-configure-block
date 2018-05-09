@@ -22,3 +22,42 @@ This is a small script that helps to convert the XML to groovy mark up. Why you 
           name('Groovy')
       }
     }
+
+Another example from real jenkins plugin could be maven plugin (just for the sake of example , we do have a maven build step plugin dsl)
+
+
+	<hudson.tasks.Maven>
+	    <targets>clean package -Pmy-profile -U</targets>
+	    <mavenName>MAVEN 3.5.0</mavenName>
+	    <usePrivateRepository>false</usePrivateRepository>
+	    <settings class="jenkins.mvn.DefaultSettingsProvider" />
+	    <globalSettings class="jenkins.mvn.DefaultGlobalSettingsProvider" />
+	    <injectBuildVariables>false</injectBuildVariables>
+	</hudson.tasks.Maven>
+
+Will be converted to 
+
+    hudson.tasks.Maven
+    {targets('clean package -Pmy-profile -U')
+    mavenName('MAVEN 3.5.0')
+    usePrivateRepository('false')
+    settings(class:'jenkins.mvn.DefaultSettingsProvider')
+    globalSettings(class:'jenkins.mvn.DefaultGlobalSettingsProvider')
+    injectBuildVariables('false')
+    }
+
+After formatting you may use this in jenkins freestyle job as 
+
+    configure { node ->
+		    	node / builders << 'hudson.tasks.Maven' {
+				    targets('clean package -Pmy-profile -U')
+				    mavenName('MAVEN 3.5.0')
+				    usePrivateRepository('false')
+				    settings(class: 'jenkins.mvn.DefaultSettingsProvider')
+				    globalSettings(class: 'jenkins.mvn.DefaultGlobalSettingsProvider')
+				    injectBuildVariables('false')
+				}
+    }
+
+
+
