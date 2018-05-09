@@ -30,7 +30,8 @@ def printMarkUp(list) {
         if(list.text()?.trim()) {
             println "${list.name()}('${list.text()}')"            
         } else {
-            println "${list.name()}()"
+            if(attr.isEmpty()) attr="()"
+            println "${list.name()}${attr}"
         }
     }
 }
